@@ -21,24 +21,31 @@ const Login = () =>{
     if(localStorage.getItem("user-info")){
       navigate("./Addproduct");
     }
- },[])
+ },[]);
+
+
+  useEffect(()=>{
+      
+  },[])
 
 const onSubmit = async (values) => {
-  // console.log(values);
-//   console.log(touched);
-
-//  let result = await fetch("",{
-//   method:"POST",
-//   headers:{
-//     "content-type":"application/json",
-//     "Accept":"application/json"
-//   },
-//   body: JSON.stringify(values)
-//  })
-//  result = await result.json();
-//  console.log("result===>",result);
-  // localStorage.setItem("user-info",JSON.stringify(result));
-  localStorage.setItem("user-info",JSON.stringify(values));
+  console.log(values);
+  console.log(touched);
+const userData = {
+  username: 'kminchelle',
+  password: '0lelplR',
+}
+ let result = await fetch("https://dummyjson.com/auth/login",{
+  method:"POST",
+  headers:{
+    "content-type":"application/json",
+    "Accept":"application/json"
+  },
+  body: JSON.stringify(userData)
+ })
+ result = await result.json();
+ console.log("result===>",result);
+  localStorage.setItem("user-info",JSON.stringify(result));
   navigate("/Addproduct");
 };
 

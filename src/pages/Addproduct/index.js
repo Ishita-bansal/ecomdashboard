@@ -16,8 +16,8 @@ const initilValues = {
   stock:"",
   brand:"",
   category:"",
-  thumbnail:"",
-  images:"",
+  thumbnail:null,
+  images:null,
 };
 
 const validationSchema = Yup.object().shape({
@@ -46,19 +46,21 @@ const Addproducts = () =>{
   const navigate = useNavigate();
   const [categorydata , setcategorydata] = useState([]);
   const [imagefile, setimagefile] = useState(null);
-  const [preValue,setPreValue]=useState('');
+  const [userImg, setUserImg] = useState('/images/images.jpg');
+  // const [imagefile, setimagefile] = useState(null);
+  // const [preValue,setPreValue]=useState('');
 
-  const handleimagefile = (e) => {
-    setimagefile(e.target.files[0]);
-  };
+  // const handleimagefile = (e) => {
+  //   setimagefile(e.target.files[0]);
+  // };
 
   useEffect(()=>{
       getres();
   },[])
 
-  useEffect(()=>{
-    setPreValue(categorydata?.[0]?.category)
-  },[categorydata])
+  // useEffect(()=>{
+  //   setPreValue(categorydata?.[0]?.category)
+  // },[categorydata])
 
   const getres = async () => {
     try {
@@ -74,22 +76,40 @@ const Addproducts = () =>{
     }
   };
    
-  const onSubmit =(values) => {
-    console.log(values);
+  const onSubmit = async(values) => {
+    console.log("values====>",values);
+
+
+
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("price", values.price);
+    formData.append("discountpercentage", values.discountpercentage);
+    formData.append("rating", values.rating);
+    formData.append("stock", values.stock);
+    formData.append("brand", values.brand);
+    formData.append("category",values.category);
+    formData.append("thumbnail",
+      userImg === '/images/images.jpg' ? null : userImg
+    );
+    formData.append("images",
+      userImg === '/images/images.jpg' ? null : userImg
+    );
+    const response = await fetch("https://dummyjson.com/products/add");
   //   console.log(touched);
  
-  //  let result = await fetch("",{
-  //   method:"GET",
-  //   headers:{
-  //     "content-type":"application/json",
-  //     "Accept":"application/json"
-  //   },
-  //   body: JSON.stringify(values)
-  //  })
-  //  result = await result.json();
-  //  console.log("result===>",result);
-    // localStorage.setItem("user-info",JSON.stringify(result));
-    // localStorage.setItem("user-info",JSON.stringify(values));
+   let result = await fetch("https://dummyjson.com/products/add",{
+    method:"POST",
+    headers:{
+      "content-type":"application/json",
+      "Accept":"application/json"
+    },
+    body: JSON.stringify(formData)
+   })
+   result = await result.json();
+   console.log("result===>",result);
+  localStorage.setItem("user-info",JSON.stringify(result));
     
   };
 
@@ -100,6 +120,8 @@ const Addproducts = () =>{
   });
   const { values, handleSubmit, setTouched, setFieldValue, touched, errors } =
     formik;
+
+    // console.log("errors=====>",errors);
     return(
         <>
         <Header/>
@@ -185,6 +207,24 @@ const Addproducts = () =>{
           />
           <ErrorHandle touched={touched} errors={errors} fieldname="rating" />
         </div>
+
+        <div>
+          <input
+            placeholder="stock"
+            name="stock"
+            value={values.stock}
+            onChange={(e) => {
+              setFieldValue("stock", e.target.value);
+            }}
+            onBlur={() => {
+              setTouched({ ...touched, stock: "true" });
+            }}
+            type="number"
+            className="form-control"
+          />
+          <ErrorHandle touched={touched} errors={errors} fieldname="stock" />
+        </div>
+
         <div>
           <input
             placeholder="brand"
@@ -203,7 +243,7 @@ const Addproducts = () =>{
         </div>
         <div>
               <select style={{width:"100%",padding:"5px",border:"1px solid grey",borderRadius:"5px"}}
-                defaultValue={preValue}
+                // defaultValue={preValue}
                 value={values.category}
                 onChange={(e) => {
                   setFieldValue("category", e.target.value);
@@ -218,33 +258,34 @@ const Addproducts = () =>{
             </div>
             
             <div>
-              <input
-                id="inputTag"
-                type="file"
-                name=" thumbnail"
-                onChange={(e) => {
-                  handleimagefile(e);
-                  setFieldValue("thumbnail", e.currentTarget.files[0]);
-                  setTouched({ ...touched, thumbnail: true });
-                }}
-              />
-               <ErrorHandle touched={touched} errors={errors} fieldname="thumbnail" />
-              </div>
-               
-              <div>
-              <input
-                id="inputTag"
-                type="file"
-                 name="images"
-                onChange={(e) => {
-                  handleimagefile(e);
-                  setFieldValue("images", e.currentTarget.files[0]);
-                  setTouched({ ...touched, images: true });
-                }}
-              />
-               <ErrorHandle touched={touched} errors={errors} fieldname="images" />
-              </div>
+  <input
+    id="thumbnailInput"
+    type="file"
+    name="thumbnail"
 
+    onChange={(e) => {
+      const file = e.target.files[0];
+      setFieldValue("thumbnail", file);
+      setTouched({ ...touched, thumbnail: true });
+    }}
+ 
+  />
+  <ErrorHandle touched={touched} errors={errors} fieldname="thumbnail" />
+</div>
+
+<div>
+  <input
+    id="imagesInput"
+    type="file"
+    name="images"
+    onChange={(e) => {
+      const file = e.target.files[0];
+      setFieldValue("images", file);
+      setTouched({ ...touched, images: true });
+    }}
+  />
+  <ErrorHandle touched={touched} errors={errors} fieldname="images" />
+   </div>
         <button type="submit" className="btn btn-primary">
           Add Products
         </button>

@@ -31,7 +31,14 @@ const Header = () =>{
       </li>
       <li class="nav-item ">
       <Link to="/Updateproduct">Update Products</Link>
+      </li>   
+      <li class="nav-item ">
+      <Link to="/Updateproduct">Update Products</Link>
       </li> 
+      <li class="nav-item ">
+      <Link to="/List">List</Link>
+      </li> 
+
         </>  :
         <>
            <li class="nav-item">
@@ -59,7 +66,6 @@ const Header = () =>{
     </ul>
 {
   localStorage.getItem("user-info") ?
-
   <NavDropdown title={ user?.name} style={{color:"white"}}>
   <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
   <NavDropdown.Item >Profile</NavDropdown.Item>
