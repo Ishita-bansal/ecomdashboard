@@ -15,11 +15,11 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email().required("Required*"),
   password: Yup.string().max(7, "Invalid Format").required("Required*"),
 });
+
 const Register = () => {
-  
    const navigate = useNavigate();
      useEffect(()=>{
-        if(localStorage.getItem("user-info")){
+        if(!localStorage.getItem("user-info")){
           navigate("./Addproduct");
         }
      },[]);
@@ -38,7 +38,7 @@ const Register = () => {
   //  result = await result.json();
   //  console.log("result===>",result);
     // localStorage.setItem("user-info",JSON.stringify(result));
-    localStorage.setItem("user-info",JSON.stringify(values));
+    // localStorage.setItem("user-info",JSON.stringify(values));
     navigate("/Addproduct");
   };
   const formik = useFormik({

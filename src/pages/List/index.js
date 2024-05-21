@@ -50,7 +50,7 @@ const navigate = useNavigate();
     return(
         <>
           <Header/>
-        <h1>Poduct List</h1>
+        <h1>Product List</h1>
 
        <TableContainer style={{padding:"20px", border:"1px solid #f1f1f1"}}>
             <Table>

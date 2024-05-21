@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Header = () =>{
   const navigate = useNavigate();
  const user = JSON.parse(localStorage.getItem("user-info"))
-  // console.log("user--->",user);
+  console.log("user--->",user);
    
   const logout = () =>{
        localStorage.clear();
@@ -29,16 +29,15 @@ const Header = () =>{
        <li class="nav-itemp active">
        <Link to="/Addproduct">Add Products</Link>
       </li>
-      <li class="nav-item ">
+      {/* <li class="nav-item ">
       <Link to="/Updateproduct">Update Products</Link>
-      </li>   
-      <li class="nav-item ">
-      <Link to="/Updateproduct">Update Products</Link>
-      </li> 
+      </li>    */}
       <li class="nav-item ">
       <Link to="/List">List</Link>
       </li> 
-
+      <li class="nav-item ">
+      <Link to="/searchComponent">search Product</Link>
+      </li> 
         </>  :
         <>
            <li class="nav-item">
@@ -66,7 +65,7 @@ const Header = () =>{
     </ul>
 {
   localStorage.getItem("user-info") ?
-  <NavDropdown title={ user?.name} style={{color:"white"}}>
+  <NavDropdown title={ user?.firstName} style={{color:"white"}}>
   <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
   <NavDropdown.Item >Profile</NavDropdown.Item>
 </NavDropdown> : null
